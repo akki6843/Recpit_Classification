@@ -1,3 +1,9 @@
+'''
+This code is designed to run the inference on the trained model
+'''
+
+# Importing the libraries
+
 import glob
 import os
 import numpy as np
@@ -14,10 +20,14 @@ import random
 import pdb
 
 
+# Label is the dictonary for converting neural net output to understandable meaning.
+
 label = {
     0 : 'recepit',
     1 : 'non-recepit'
 }
+
+# Creating the model architecture for prediction
 
 img_rows, img_cols = 224, 224
 input_shape = (img_rows, img_cols, 3)
@@ -30,7 +40,7 @@ def create_model():
     model = Model(input=base_model.input, output=predictions)
     return model
 
-
+# The inference funcation will call the model then loads the weight from h5 file
 
 def inference(imgname, label):
     model = create_model()

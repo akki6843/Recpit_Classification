@@ -1,3 +1,9 @@
+'''
+This is the training script for making the recepit classifier
+'''
+
+#Importing libraries 
+
 import glob
 import os
 import numpy as np
@@ -12,7 +18,10 @@ from keras.utils import to_categorical
 from matplotlib import pyplot as plt
 import random
 import pdb
+
+
 '''
+# this part of the code is for restricting the gpu to a certain percentage
 import tensorflow as tf 
 from keras.backend.tensorflow_backend import set_session 
 config = tf.ConfigProto() 
@@ -20,12 +29,14 @@ config.gpu_options.per_process_gpu_memory_fraction = 0.3
 set_session(tf.Session(config=config))
 '''
 
+# Getting the path of dataset
+paths = "./Recpit_Classification/data/*/*"
 
-paths = "/home/akshay/Recpit_Classification/data/*/*"
-
+# Collecting all the path
 data_path = glob.glob(paths)
 print(len(data_path))
 
+# Data_Spinner is the suncation that will generate the data ready for neural network
 def data_spinner(data_path):
 	random.shuffle(data_path)
 	Y = []
@@ -54,6 +65,8 @@ print(X)
 
 img_rows, img_cols = 224, 224
 
+# Creating model for training
+
 input_shape = (img_rows, img_cols, 3)
 def create_model():
     base_model = VGG16(weights='imagenet', include_top=False)
@@ -64,9 +77,10 @@ def create_model():
     model = Model(input=base_model.input, output=predictions)
     return model
 
-model = create_model()
-model.summary()
+# model = create_model()
+# model.summary()
 
+# Training opreation with validation on 30% of the data
 def train():
     model = create_model()
     model.compile(optimizer=Adam(lr=0.0001, beta_1=0.9, beta_2=0.999), loss='categorical_crossentropy', metrics=['accuracy'])
